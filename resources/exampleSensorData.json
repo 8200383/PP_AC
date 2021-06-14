@@ -1,0 +1,47 @@
+[
+    {
+        "id": "QA0NO20001",
+        "date": "202105121800",
+        "dateStandard": "UTC",
+        "value": 151,
+        "unit": "µg/m3",
+        "address": "Jardim da Estrela",
+        "coordinates": {
+          "x": -92781,
+          "y": -106663,
+          "z": 0,
+          "lat": 38.70263097,
+          "lng": -9.199692206
+        }
+      },
+      {
+        "id": "QA0NO20002",
+        "date": "202105121800",
+        "dateStandard": "UTC",
+        "value": 54,
+        "unit": "µg/m3",
+        "address": "Jardim da Estrela",
+        "coordinates": {
+          "x": -92781,
+          "y": -106663,
+          "z": 0,
+          "lat": 38.70263097,
+          "lng": -9.199692206
+        }
+      },
+      {
+        "id": "QA0NO20003",
+        "date": "202105121800",
+        "dateStandard": "UTC",
+        "value": 405,
+        "unit": "µg/m3",
+        "address": "Jardim da Estrela",
+        "coordinates": {
+          "x": -92781,
+          "y": -106663,
+          "z": 0,
+          "lat": 38.70263097,
+          "lng": -9.199692206
+        }
+      }
+]
