@@ -65,7 +65,7 @@ public class Menu {
                     case 1 -> report = importJsonData(scanner, city);
                     case 2 -> showAll(city);
                     case 3 -> showExceptions(report);
-                    case 4, 6, 5, 7, 8 -> {
+                    case 4, 6, 5, 7 -> {
                         if (city == null) {
                             System.out.println("You should create a city first!");
                             break;
@@ -83,6 +83,7 @@ public class Menu {
                             }
                         }
                     }
+                    case 8 -> showImportationReport(report);
                     case 9 -> System.out.println("Quiting...");
                 }
             } while (opt != 9);
@@ -285,6 +286,21 @@ public class Menu {
                 System.out.println(e);
             }
         }
+    }
+
+    private static void showImportationReport(IOStatistics report) {
+        if (report == null) {
+            System.out.println("You should import data first!");
+            return;
+        }
+
+        System.out.println("Number of Measurements Read: " + report.getNumberOfReadMeasurements() +
+                "\nNumber of new Measurements Read: " + report.getNumberOfNewMeasurementsRead() +
+                "\nNumber of Stations Read: " + report.getNumberOfStationsRead() +
+                "\nNumber of new Stations Read: " + report.getNumberOfNewStationsRead() +
+                "\nNumber of Sensors Read: " + report.getNumberOfSensorsRead() +
+                "\nNumber of new Sensors Read: " + report.getNumberOfNewSensorsRead() +
+                "\nNumber of exceptions: ");
     }
 
     private static LocalDateTime readDate(Scanner scanner, String hint) {
