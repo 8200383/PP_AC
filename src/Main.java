@@ -10,7 +10,6 @@ import MA02.Menu;
  * Turma: LEI1T3
  */
 public class Main {
-
     public static void main(String[] args) {
         Menu.enterLoop();
     }

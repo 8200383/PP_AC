@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="PP_AC_8200383_8200590">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../PP_AC_8200383_8200590/out/artifacts/PP_AC_8200383_8200590_jar/PP_AC_8200383_8200590.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/PP_AC_8200383_8200590.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

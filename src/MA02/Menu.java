@@ -89,6 +89,28 @@ public class Menu {
         }
     }
 
+    private static String[] addString(String[] srcArray, String element) {
+        String[] destArray = new String[srcArray.length + 1];
+        System.arraycopy(srcArray, 0, destArray, 0, srcArray.length);
+
+        destArray[destArray.length - 1] = element;
+        return destArray;
+    }
+
+    private static void grow() {
+        ChartInfo[] destArray = new ChartInfo[chartInfos.length * 2];
+        System.arraycopy(chartInfos, 0, destArray, 0, chartInfoCount);
+        chartInfos = destArray;
+    }
+
+    private static void addChartInfo(ChartInfo chartInfo) {
+        if (chartInfos.length == chartInfoCount) {
+            grow();
+        }
+
+        chartInfos[chartInfoCount++] = chartInfo;
+    }
+
     private static AggregationOperator selectAggregationOperator(Scanner scanner) {
         AggregationOperator operator = null;
 
@@ -293,6 +315,8 @@ public class Menu {
 
         // TODO o que acontece se n for no formato que ele quer
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        System.out.println("Choose a " + hint + " in the following format yyyy-MM-dd HH:mm");
+        String startDate = scanner.next();
         return LocalDateTime.parse(startDate, formatter);
     }
 }
