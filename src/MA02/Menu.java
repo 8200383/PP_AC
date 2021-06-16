@@ -1,18 +1,22 @@
 package MA02;
 
 import Core.*;
+import Quickchart.ChartType;
+import Quickchart.QuickChart;
 import SensorDataInput.ImportationReport;
 import SensorDataInput.JsonImporter;
 import edu.ma02.core.enumerations.AggregationOperator;
 import edu.ma02.core.enumerations.Parameter;
 import edu.ma02.core.exceptions.CityException;
 import edu.ma02.core.interfaces.*;
+import edu.ma02.dashboards.Dashboard;
 import edu.ma02.io.interfaces.IOStatistics;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 /*
  * Nome: Micael André Cunha Dias
@@ -27,6 +31,9 @@ public class Menu {
 
     private static City city = null;
     private static ImportationReport report = null;
+    private static ChartInfo[] chartInfos = new ChartInfo[10];
+    private static int chartInfoCount = 0;
+    private static final Logger logger = Logger.getLogger(Menu.class.getName());
 
     public Menu() {
     }
@@ -46,7 +53,8 @@ public class Menu {
                         6. View Measurements By Station Between Dates
                         7. View Measurements By Sensor Between Dates
                         8. Visualizar Relatório de Importação
-                        9. Exit
+                        9. Export All Views
+                        10. Exit
                         >\040""");
 
                 // \040 means trim whitespaces
@@ -76,16 +84,44 @@ public class Menu {
                             break;
                         }
 
-                        IStatistics[] statistics = readMeasurements(scanner, city, opt);
+                        AggregationOperator operator = selectAggregationOperator(scanner);
+                        Parameter parameter = selectParameter(scanner);
+
+                        System.out.print("Name of measurement to export: ");
+                        String nameOfMeasurement = scanner.next();
+
+                        IStatistics[] statistics = readMeasurements(scanner, city, opt, operator, parameter);
+
+                        addChartInfo(new ChartInfo(nameOfMeasurement, statistics, parameter, ChartType.BAR));
+
                         for (IStatistics iStatistic : statistics) {
                             if (iStatistic instanceof Statistic statistic) {
                                 System.out.println(statistic.getDescription() + " " + statistic.getValue());
                             }
                         }
                     }
-                    case 9 -> System.out.println("Quiting...");
+                    case 9 -> {
+                        String[] toExportation = new String[]{};
+
+                        for (ChartInfo nc : chartInfos) {
+                            if (nc != null) {
+                                QuickChart qc = new QuickChart();
+                                qc.setOutputPath("resources/");
+                                qc.setChartConfiguration(nc.getName(), nc.getParameter(), nc.getChartData(), nc.getType());
+
+                                String jsonRepresentation = qc.export();
+                                System.out.println(jsonRepresentation);
+                                toExportation = addString(toExportation, jsonRepresentation);
+                            }
+                        }
+
+                        Dashboard.render(toExportation);
+                    }
+                    case 10 -> System.out.println("Quiting...");
                 }
             } while (opt != 9);
+        } catch (IOException e) {
+            logger.warning("fodeu");
         }
     }
 
@@ -199,9 +235,7 @@ public class Menu {
         return parameter;
     }
 
-    private static IStatistics[] readMeasurements(Scanner scanner, ICityStatistics city, int previousOption) {
-        AggregationOperator operator = selectAggregationOperator(scanner);
-        Parameter parameter = selectParameter(scanner);
+    private static IStatistics[] readMeasurements(Scanner scanner, ICityStatistics city, int previousOption, AggregationOperator operator, Parameter parameter) {
         IStatistics[] statistics = null;
 
         switch (previousOption) {
@@ -310,10 +344,6 @@ public class Menu {
     }
 
     private static LocalDateTime readDate(Scanner scanner, String hint) {
-        System.out.println("Choose a " + hint + " in the following format yyyy-MM-dd HH:mm");
-        String startDate = scanner.next();
-
-        // TODO o que acontece se n for no formato que ele quer
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         System.out.println("Choose a " + hint + " in the following format yyyy-MM-dd HH:mm");
         String startDate = scanner.next();
