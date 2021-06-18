@@ -119,7 +119,7 @@ public class Menu {
                     }
                     case 10 -> System.out.println("Quiting...");
                 }
-            } while (opt != 9);
+            } while (opt != 10);
         } catch (IOException e) {
             logger.warning("fodeu");
         }
